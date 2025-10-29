@@ -7,6 +7,10 @@ use crate::{
 
 type U<const N: usize> = UInt<N>;
 
+const fn is_multiple_of(n: usize, divisor: usize) -> bool {
+    n % divisor == 0
+}
+
 #[inline(always)]
 pub const fn div<const N: usize>(dividend: U<N>, divisor: U<N>) -> U<N> {
     match N {
@@ -173,7 +177,7 @@ const fn div_rem_long<const N: usize>(dividend: U<N>, divisor: U<N>) -> (U<N>, U
 // TODO(!)
 #[inline(always)]
 const fn div_rem_wide_long<const N: usize>(low: U<N>, high: U<N>, divisor: U<N>) -> (U<N>, U<N>) {
-    debug_assert!(N.is_multiple_of(2));
+    debug_assert!(is_multiple_of(N, 2));
 
     let mut d = divisor;
     let mut l = low;
@@ -200,7 +204,7 @@ const fn div_rem_wide_long<const N: usize>(low: U<N>, high: U<N>, divisor: U<N>)
 
 #[inline]
 const fn split<const N: usize>(value: U<N>) -> (U<N>, U<N>) {
-    debug_assert!(N.is_multiple_of(2));
+    debug_assert!(is_multiple_of(N, 2));
 
     let mut low = [0; N];
     let mut high = [0; N];
@@ -223,7 +227,7 @@ const fn split<const N: usize>(value: U<N>) -> (U<N>, U<N>) {
 
 #[inline]
 const fn join<const N: usize>(low: U<N>, high: U<N>) -> U<N> {
-    debug_assert!(N.is_multiple_of(2));
+    debug_assert!(is_multiple_of(N, 2));
 
     let mut out = [0; N];
 
